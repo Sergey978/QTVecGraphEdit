@@ -33,3 +33,6 @@ HEADERS += \
         mainwindow.h \
     shapeitem.h \
     drawscene.h
+
+RESOURCES += \
+    resources.qrc

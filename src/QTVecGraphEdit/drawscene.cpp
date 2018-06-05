@@ -29,22 +29,19 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     ShapeItem *item;
     switch (myMode) {
     case InsertItem:
-        item = new ShapeItem(itemType, myMenuItem);
-        // item->setBrush(myItemColor);
-        addItem(item);
-        item->setPos(mouseEvent->scenePos());
-        emit itemInserted(item);
+
         break;
         //! [6] //! [7]
     case InsertLine:
-
         line = new QGraphicsLineItem(QLineF(mouseEvent->scenePos(),
-                                            mouseEvent->scenePos()));
-        item = new ShapeItem(ShapeItem::Line, myMenuItem, line);
+                                                    mouseEvent->scenePos()));
+                item = new ShapeItem(ShapeItem::Line, myMenuItem, line);
 
-        // line->setPen(QPen(myLineColor, 2));
-        //addItem(line);
-        addItem(item);
+                // line->setPen(QPen(myLineColor, 2));
+                //addItem(line);
+                addItem(item->getShape());
+
+
         break;
         //! [7] //! [8]
     case InsertText:
