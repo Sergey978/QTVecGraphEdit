@@ -33,8 +33,8 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         break;
         //! [6] //! [7]
     case InsertLine:
-        line = new QGraphicsLineItem(QLineF(mouseEvent->scenePos(),
-                                                    mouseEvent->scenePos()));
+        line = new MyLine( QLineF(mouseEvent->scenePos(),
+                                                   mouseEvent->scenePos()));
                 item = new ShapeItem(ShapeItem::Line, myMenuItem, line);
 
                 // line->setPen(QPen(myLineColor, 2));
@@ -78,31 +78,8 @@ void DrawScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void DrawScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    /*
-    if (line != 0 && myMode == InsertLine) {
-        QList<QGraphicsItem *> startItems = items(line->line().p1());
-        if (startItems.count() && startItems.first() == line)
-            startItems.removeFirst();
-        QList<QGraphicsItem *> endItems = items(line->line().p2());
-        if (endItems.count() && endItems.first() == line)
-            endItems.removeFirst();
-
-        removeItem(line);
-        delete line;
-
-        if (startItems.count() > 0 && endItems.count() > 0 &&
-                    startItems.first()->type() == DiagramItem::Type &&
-                    endItems.first()->type() == DiagramItem::Type &&
-                    startItems.first() != endItems.first()) {
-                    DiagramItem *startItem = qgraphicsitem_cast<DiagramItem *>(startItems.first());
-                    DiagramItem *endItem = qgraphicsitem_cast<DiagramItem *>(endItems.first());
-
-                }
 
 
-    }
-*/
-    line = 0;
 
     QGraphicsScene::mouseReleaseEvent(mouseEvent);
 }

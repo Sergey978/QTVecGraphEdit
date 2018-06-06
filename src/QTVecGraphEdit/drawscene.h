@@ -4,12 +4,13 @@
 #include "shapeitem.h"
 
 #include <QGraphicsScene>
+#include "myline.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsSceneMouseEvent;
 class QMenu;
 class QPointF;
-class QGraphicsLineItem;
+
 
 QT_END_NAMESPACE
 
@@ -41,7 +42,7 @@ private:
     ShapeItem::ShapeType itemType;
     Mode myMode;
     QMenu *myMenuItem;
-    QGraphicsLineItem *line;
+    MyLine *line;
 
 
 };
