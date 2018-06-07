@@ -34,7 +34,7 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         //! [6] //! [7]
     case InsertLine:
         line = new MyLine( QLineF(mouseEvent->scenePos(),
-                                                    mouseEvent->scenePos()));
+                                                   mouseEvent->scenePos()));
                 item = new ShapeItem(ShapeItem::Line, myMenuItem, line);
 
                 // line->setPen(QPen(myLineColor, 2));

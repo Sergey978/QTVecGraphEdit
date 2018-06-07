@@ -6,7 +6,6 @@
 
 QT_BEGIN_NAMESPACE
 class QGraphicsPolygonItem;
-class QGraphicsLineItem;
 class QGraphicsScene;
 class QRectF;
 class QGraphicsSceneMouseEvent;
@@ -17,7 +16,8 @@ class MyLine :  public QGraphicsLineItem
 {
     Q_OBJECT
 public:
-    MyLine(QGraphicsItem *parent = 0);
+    MyLine( QLineF &line, QGraphicsItem *parent = 0);
+    MyLine(){}
 
         QRectF boundingRect() const override;
         QPainterPath shape() const override;

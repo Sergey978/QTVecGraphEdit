@@ -5,7 +5,7 @@
 #include <QPainter>
 
 
-MyLine::MyLine(  QGraphicsItem *parent):QGraphicsLineItem(parent)
+MyLine::MyLine(  QLineF &line, QGraphicsItem *parent):QGraphicsLineItem(parent)
 {
 
     myColor = Qt::black;
@@ -34,8 +34,8 @@ QPainterPath MyLine::shape() const
 
 void MyLine::updatePosition()
 {
-    QLineF line(mapFromItem(myStartItem, 0, 0), mapFromItem(myEndItem, 0, 0));
-    setLine(line);
+   // QLineF line(mapFromItem(myStartItem, 0, 0), mapFromItem(myEndItem, 0, 0));
+  //  setLine(line);
 }
 
 
@@ -54,7 +54,7 @@ void MyLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
 
 //! [6] //! [7]
     painter->drawLine(line());
-    painter->drawPolygon(arrowHead);
+
     if (isSelected()) {
         painter->setPen(QPen(myColor, 1, Qt::DashLine));
         QLineF myLine = line();
