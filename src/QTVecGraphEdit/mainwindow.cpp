@@ -38,9 +38,6 @@ MainWindow::MainWindow()
 MainWindow::~MainWindow()
 {
 
-
-
-
 }
 
 void MainWindow::buttonGroupClicked(int id)
