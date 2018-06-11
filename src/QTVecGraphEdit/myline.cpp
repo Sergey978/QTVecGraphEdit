@@ -4,6 +4,7 @@
 #include <QPen>
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
+#include <QDebug>
 
 
 MyLine::MyLine(  QLineF line, QGraphicsItem *parent):QGraphicsLineItem(line, parent)
@@ -37,6 +38,7 @@ QPainterPath MyLine::shape() const
 void MyLine::updatePosition()
 {
 
+
 }
 
 
@@ -66,24 +68,30 @@ void MyLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
 
     }
 
+
+update();
 }
 
 void MyLine::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    qDebug() << "MyLine::mousePressEvent  ";
     if(event->button() == Qt::LeftButton) {
         QPointF pos = event->scenePos();
         if (getDistance(pos, line().p1()) <=   SELECT_POINT)
         {
             _selectedPoint = 1;
             _isResizing = true;
+             qDebug() << "_selectedPoint = 1;  ";
         }
         else if (getDistance(pos, line().p2()) <=  SELECT_POINT)
         {
             _selectedPoint = 2;
             _isResizing = true;
+            qDebug() << "_selectedPoint = 2;  ";
         }
         else
             _isResizing = false;
+        setSelected(true);
     }
 }
 
@@ -91,20 +99,32 @@ void MyLine::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if (_isResizing)
     {
+    prepareGeometryChange();
         QPointF pos = event->scenePos();
         if (_selectedPoint ==1 )
         {
-            line().setP1(pos);
+            QLineF tempLine = line();
+            tempLine.setP1(pos);
+            setLine(tempLine);
+
+            qDebug() << "pos p1 x=  " << pos.x() <<  "pos p1 y=  " << pos.y();
+
         }
         else if(_selectedPoint == 2)
         {
-            line().setP2(pos);
+            QLineF tempLine = line();
+            tempLine.setP2(pos);
+            setLine(tempLine);
+
+
+            qDebug() << "pos p2 x=  " << pos.x() <<  "pos p2 y=  " << pos.y();
         }
     }
     else
     {
         QGraphicsItem::mouseMoveEvent(event);
     }
+    update();
 }
 
 void MyLine::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -114,6 +134,7 @@ void MyLine::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 int MyLine::getDistance(QPointF p1, QPointF p2)
 {
+    qDebug() << " getDistance " << sqrt(pow(p1.x()- p2.x(), 2) + pow(p1.y()-p2.y(), 2));;
     return   sqrt(pow(p1.x()- p2.x(), 2) + pow(p1.y()-p2.y(), 2));
 }
 

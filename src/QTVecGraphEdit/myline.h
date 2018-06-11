@@ -14,7 +14,7 @@ class MyLine :  public QGraphicsLineItem
 {
 
 public:
-    static const int SELECT_POINT = 3;
+    static const int SELECT_POINT = 5;
 
     MyLine( QLineF line, QGraphicsItem *parent = 0);
         QRectF boundingRect() const override;
