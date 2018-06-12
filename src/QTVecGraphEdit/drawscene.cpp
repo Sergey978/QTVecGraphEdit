@@ -1,5 +1,6 @@
 #include "drawscene.h"
 #include <QGraphicsSceneMouseEvent>
+#include <QDebug>
 
 DrawScene::DrawScene(QMenu *itemMenu, QObject *parent):QGraphicsScene(parent)
 {
@@ -23,6 +24,7 @@ void DrawScene::setItemType(ShapeItem::ShapeType type)
 
 void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
+    qDebug() << "DrawScene PressEvent ";
     if (mouseEvent->button() != Qt::LeftButton)
         return;
 
@@ -63,17 +65,21 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     default:
         ;
     }
+    update();
     QGraphicsScene::mousePressEvent(mouseEvent);
 }
 
 void DrawScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
+
+     qDebug() << "DrawScene PressEvent ";
     if (myMode == InsertLine && line != 0) {
         QLineF newLine(line->line().p1(), mouseEvent->scenePos());
         line->setLine(newLine);
     } else if (myMode == MoveItem) {
         QGraphicsScene::mouseMoveEvent(mouseEvent);
     }
+
 }
 
 void DrawScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
