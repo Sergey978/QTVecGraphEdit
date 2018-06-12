@@ -77,13 +77,13 @@ void MyLine::mousePressEvent(QGraphicsSceneMouseEvent *event)
     qDebug() << "MyLine::mousePressEvent  ";
     if(event->button() == Qt::LeftButton) {
         QPointF pos = event->scenePos();
-        if (getDistance(pos, line().p1()) <=   SELECT_POINT)
+        if (getDistance(pos,mapToParent( line().p1())) <=   SELECT_POINT)
         {
             _selectedPoint = 1;
             _isResizing = true;
              qDebug() << "_selectedPoint = 1;  ";
         }
-        else if (getDistance(pos, line().p2()) <=  SELECT_POINT)
+        else if (getDistance(pos,mapToParent( line().p2())) <=  SELECT_POINT)
         {
             _selectedPoint = 2;
             _isResizing = true;
