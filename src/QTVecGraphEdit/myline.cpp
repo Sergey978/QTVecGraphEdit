@@ -7,6 +7,12 @@
 #include <QDebug>
 
 
+/*
+Qt/C++ - Lesson 027. Polymorphism in Qt 
+by the example of geometric shapes in QGraphicsScene
+
+*/
+
 MyLine::MyLine(  QLineF line, QGraphicsItem *parent):QGraphicsLineItem(line, parent)
 {
 
@@ -100,7 +106,7 @@ void MyLine::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if (_isResizing)
     {
     prepareGeometryChange();
-        QPointF pos = event->scenePos();
+        QPointF pos = event->pos() ;
         if (_selectedPoint ==1 )
         {
             QLineF tempLine = line();
