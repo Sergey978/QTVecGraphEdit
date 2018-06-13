@@ -31,10 +31,14 @@ protected:
 
 private:
 
-    int getDistance(QPointF p1, QPointF p2) ;
+
     QColor myColor;
     bool _isResizing;
     int _selectedPoint;
+    QPointF offset;
+
+
+    int getDistance(QPointF p1, QPointF p2) ;
 
 };
 

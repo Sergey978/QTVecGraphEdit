@@ -24,7 +24,7 @@ void DrawScene::setItemType(ShapeItem::ShapeType type)
 
 void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    qDebug() << "DrawScene PressEvent ";
+
     if (mouseEvent->button() != Qt::LeftButton)
         return;
 
@@ -72,7 +72,7 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void DrawScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 
-     qDebug() << "DrawScene PressEvent ";
+
     if (myMode == InsertLine && line != 0) {
         QLineF newLine(line->line().p1(), mouseEvent->scenePos());
         line->setLine(newLine);
