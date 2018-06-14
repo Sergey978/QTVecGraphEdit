@@ -28,13 +28,15 @@ SOURCES += \
         mainwindow.cpp \
     shapeitem.cpp \
     drawscene.cpp \
-    myline.cpp
+    myline.cpp \
+    myellypse.cpp
 
 HEADERS += \
         mainwindow.h \
     shapeitem.h \
     drawscene.h \
-    myline.h
+    myline.h \
+    myellypse.h
 
 RESOURCES += \
     resources.qrc

@@ -7,12 +7,6 @@
 #include <QDebug>
 
 
-/*
-Qt/C++ - Lesson 027. Polymorphism in Qt 
-by the example of geometric shapes in QGraphicsScene
-
-*/
-
 MyLine::MyLine(  QLineF line, QGraphicsItem *parent):QGraphicsLineItem(line, parent)
 {
 
@@ -52,8 +46,6 @@ void MyLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
                    QWidget *)
 {
 
-
-    // from other project example
     // draws/paints the path of line
     QPen myPen = pen();
     myPen.setColor(myColor);

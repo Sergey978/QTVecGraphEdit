@@ -30,7 +30,7 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
     ShapeItem *item;
     switch (myMode) {
-    case InsertItem:
+    case InsertEllipse:
 
         break;
         //! [6] //! [7]

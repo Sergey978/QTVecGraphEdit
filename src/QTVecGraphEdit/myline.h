@@ -4,12 +4,6 @@
 #include <QGraphicsLineItem>
 
 
-QT_BEGIN_NAMESPACE
-class QGraphicsPolygonItem;
-class QRectF;
-class QPainterPath;
-QT_END_NAMESPACE
-
 class MyLine :  public QGraphicsLineItem
 {
 

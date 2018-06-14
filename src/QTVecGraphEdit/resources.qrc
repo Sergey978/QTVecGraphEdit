@@ -4,5 +4,6 @@
         <file>Images/delete.png</file>
         <file>Images/linepointer.png</file>
         <file>Images/pointer.png</file>
+        <file>Images/ellipse.png</file>
     </qresource>
 </RCC>

@@ -20,7 +20,7 @@ class DrawScene : public QGraphicsScene
 public:
     DrawScene(QMenu *itemMenu, QObject *parent = 0);
 
-    enum Mode {InsertItem, InsertLine, InsertText, MoveItem, ResizeItem};
+    enum Mode {InsertEllipse, InsertPolygone,  InsertLine, InsertText, MoveItem, ResizeItem};
 
 public slots:
     void setMode(Mode mode);
