@@ -9,8 +9,9 @@ class MyEllypse: public QGraphicsEllipseItem
 public:
      static const int SELECT_POINT = 5;
 
-    MyEllypse( QGraphicsEllipseItem ellipse, QGraphicsItem *parent = 0);
+    MyEllypse(  QGraphicsItem *parent = 0);
 
+    QPointF getCenter() const;
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
     void setColor(const QColor &color);

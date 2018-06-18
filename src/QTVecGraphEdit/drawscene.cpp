@@ -4,27 +4,27 @@
 
 DrawScene::DrawScene(QMenu *itemMenu, QObject *parent):QGraphicsScene(parent)
 {
- myMenuItem = itemMenu;
- myMode = MoveItem;
- itemType = ShapeItem::Line;
- line = 0;
+    myMenuItem = itemMenu;
+    myMode = MoveItem;
+    itemType = ShapeItem::Line;
+    line = 0;
 
 
 }
 
 void DrawScene::setMode(DrawScene::Mode mode)
 {
- myMode = mode;
+    myMode = mode;
 }
 
 void DrawScene::setItemType(ShapeItem::ShapeType type)
 {
-   itemType = type;
+    itemType = type;
 }
 
 void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-
+ QPointF pt = mouseEvent->scenePos();
     if (mouseEvent->button() != Qt::LeftButton)
         return;
 
@@ -32,20 +32,24 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     switch (myMode) {
     case InsertEllipse:
 
+        ellipse = new MyEllypse();
+        ellipse->setRect(pt.x()-1, pt.y()-1, 2, 2);
+        item  = new ShapeItem(ShapeItem::Ellipse, myMenuItem, ellipse);
+        addItem(item->getShape());
+        qDebug() << " ellipse Added";
         break;
-        //! [6] //! [7]
+
     case InsertLine:
-        line = new MyLine( QLineF(mouseEvent->scenePos(),
-                                                   mouseEvent->scenePos()));
-                item = new ShapeItem(ShapeItem::Line, myMenuItem, line);
+        line = new MyLine( QLineF(pt, pt));
+        item = new ShapeItem(ShapeItem::Line, myMenuItem, line);
 
-                // line->setPen(QPen(myLineColor, 2));
-                //addItem(line);
-                addItem(item->getShape());
+        // line->setPen(QPen(myLineColor, 2));
+        //addItem(line);
+        addItem(item->getShape());
 
 
         break;
-        //! [7] //! [8]
+
     case InsertText:
         /*
                textItem = new DiagramTextItem();
@@ -76,7 +80,15 @@ void DrawScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
     if (myMode == InsertLine && line != 0) {
         QLineF newLine(line->line().p1(), mouseEvent->scenePos());
         line->setLine(newLine);
-    } else if (myMode == MoveItem) {
+    }
+    else if (myMode == InsertEllipse && ellipse !=0){
+
+         QPointF pos = mouseEvent->scenePos();
+         double dist = sqrt(pow(ellipse->getCenter().x()-pos.x(), 2) + pow(ellipse->getCenter().y()-pos.y(), 2));
+        ellipse->setRect(ellipse->getCenter().x()- pos.x()-dist, ellipse->getCenter().y()- pos.y()-dist, dist*2, dist*2);
+        qDebug() << "   ellipse->getCenter()        "  << ellipse->getCenter();
+    }
+    else if (myMode == MoveItem) {
         QGraphicsScene::mouseMoveEvent(mouseEvent);
     }
 

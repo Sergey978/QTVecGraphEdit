@@ -5,13 +5,12 @@
 
 #include <QGraphicsScene>
 #include "myline.h"
+#include "myellypse.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsSceneMouseEvent;
 class QMenu;
 class QPointF;
-
-
 QT_END_NAMESPACE
 
 class DrawScene : public QGraphicsScene
@@ -43,6 +42,7 @@ private:
     Mode myMode;
     QMenu *myMenuItem;
     MyLine *line;
+    MyEllypse *ellipse;
 
 
 };
