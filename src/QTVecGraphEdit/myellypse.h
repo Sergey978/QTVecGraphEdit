@@ -9,7 +9,7 @@ class MyEllypse: public QGraphicsEllipseItem
 public:
      static const int SELECT_POINT = 5;
 
-    MyEllypse(  QGraphicsItem *parent = 0);
+    MyEllypse(const QRectF & outline, QGraphicsItem *parent = 0);
 
     QPointF getCenter() const;
     QRectF boundingRect() const override;

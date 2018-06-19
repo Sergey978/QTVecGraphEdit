@@ -8,9 +8,13 @@
 #include <QDebug>
 
 
-MyEllypse::MyEllypse( QGraphicsItem *parent):QGraphicsEllipseItem( parent)
+MyEllypse::MyEllypse(const QRectF & outline, QGraphicsItem *parent):QGraphicsEllipseItem( parent)
 {
 
+    center.setX(outline.x()+outline.width()/2);
+    center.setY(outline.y() + outline.height()/2);
+    width = outline.width();
+    height = outline.height();
     myColor = Qt::black;
        setPen(QPen(myColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
@@ -36,6 +40,8 @@ QPainterPath MyEllypse::shape() const
 
     QPainterPath path = QGraphicsEllipseItem::shape();
 
+    qDebug() << " path ellipse return";
+
     return path;
 }
 
@@ -46,11 +52,12 @@ void MyEllypse::updatePosition()
 
 }
 
-void MyEllypse::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void MyEllypse::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
 
+     qDebug() << " MyEllypse::paint ";
 
-    // draws/paints the path of line
+    // draws/paints the path of ellipse
     QPen myPen = pen();
     myPen.setColor(myColor);
 
@@ -72,8 +79,9 @@ void MyEllypse::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 }
 
-void MyEllypse::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void MyEllypse::mousePressEvent( QGraphicsSceneMouseEvent *event)
 {
+     qDebug() << " MyEllypse::mousePressEvent ";
 offset = event->pos();
 
 if(event->button() == Qt::LeftButton) {

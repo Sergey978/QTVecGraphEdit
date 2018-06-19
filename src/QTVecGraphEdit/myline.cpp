@@ -32,7 +32,7 @@ QPainterPath MyLine::shape() const
 {
     QPainterPath path = QGraphicsLineItem::shape();
 
-    return path;
+   return path;
 }
 
 void MyLine::updatePosition()
@@ -45,6 +45,7 @@ void MyLine::updatePosition()
 void MyLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
                    QWidget *)
 {
+qDebug() << " MyLine::paint ";
 
     // draws/paints the path of line
     QPen myPen = pen();
@@ -67,11 +68,12 @@ void MyLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
     }
 
 
-    update();
+
 }
 
 void MyLine::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    qDebug() << " MyLine::mousePressEvent ";
     offset = event->pos();
 
     if(event->button() == Qt::LeftButton) {
@@ -80,8 +82,7 @@ void MyLine::mousePressEvent(QGraphicsSceneMouseEvent *event)
         if (getDistance(pos,mapToParent( line().p1())) <=   SELECT_POINT)
         {
             _selectedPoint = 1;
-            _isResizing = true;
-            qDebug() << "_selectedPoint = 1;  ";
+            _isResizing = true;           
         }
         else if (getDistance(pos,mapToParent( line().p2())) <=  SELECT_POINT)
         {
@@ -97,6 +98,7 @@ void MyLine::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void MyLine::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    qDebug() << " MyLine::mouseMoveEvent ";
     QLineF tempLine = line();
     if (_isResizing)
     {
@@ -119,8 +121,7 @@ void MyLine::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
     else
     {
-        qDebug() << "line cur position "  <<  line().p1();
-        setPos(mapToParent(event->pos() - offset));
+               setPos(mapToParent(event->pos() - offset));
 
     }
 

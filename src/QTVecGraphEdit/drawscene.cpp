@@ -8,6 +8,7 @@ DrawScene::DrawScene(QMenu *itemMenu, QObject *parent):QGraphicsScene(parent)
     myMode = MoveItem;
     itemType = ShapeItem::Line;
     line = 0;
+    ellipse = 0;
 
 
 }
@@ -24,7 +25,7 @@ void DrawScene::setItemType(ShapeItem::ShapeType type)
 
 void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
- QPointF pt = mouseEvent->scenePos();
+    QPointF pt = mouseEvent->scenePos();
     if (mouseEvent->button() != Qt::LeftButton)
         return;
 
@@ -32,11 +33,11 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     switch (myMode) {
     case InsertEllipse:
 
-        ellipse = new MyEllypse();
-        ellipse->setRect(pt.x()-1, pt.y()-1, 2, 2);
+        ellipse = new MyEllypse(QRectF(pt.x()-10, pt.y()-10, 20, 20));
+
         item  = new ShapeItem(ShapeItem::Ellipse, myMenuItem, ellipse);
         addItem(item->getShape());
-        qDebug() << " ellipse Added";
+
         break;
 
     case InsertLine:
@@ -46,7 +47,6 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         // line->setPen(QPen(myLineColor, 2));
         //addItem(line);
         addItem(item->getShape());
-
 
         break;
 
@@ -78,15 +78,16 @@ void DrawScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 
     if (myMode == InsertLine && line != 0) {
+        qDebug( )  << " DrawScene::mouseMoveEvent insetLine ";
         QLineF newLine(line->line().p1(), mouseEvent->scenePos());
         line->setLine(newLine);
     }
     else if (myMode == InsertEllipse && ellipse !=0){
-
-         QPointF pos = mouseEvent->scenePos();
-         double dist = sqrt(pow(ellipse->getCenter().x()-pos.x(), 2) + pow(ellipse->getCenter().y()-pos.y(), 2));
+ qDebug( )  << " DrawScene::mouseMoveEvent insertEllipse ";
+        QPointF pos = mouseEvent->scenePos();
+        double dist = sqrt(pow(ellipse->getCenter().x()-pos.x(), 2) + pow(ellipse->getCenter().y()-pos.y(), 2));
         ellipse->setRect(ellipse->getCenter().x()- pos.x()-dist, ellipse->getCenter().y()- pos.y()-dist, dist*2, dist*2);
-        qDebug() << "   ellipse->getCenter()        "  << ellipse->getCenter();
+          //  qDebug() << "   ellipse->getCenter()        "  << ellipse->getCenter();
     }
     else if (myMode == MoveItem) {
         QGraphicsScene::mouseMoveEvent(mouseEvent);
