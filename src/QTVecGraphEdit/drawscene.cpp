@@ -1,6 +1,7 @@
 #include "drawscene.h"
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
+#include"stdlib.h"
 
 DrawScene::DrawScene(QMenu *itemMenu, QObject *parent):QGraphicsScene(parent)
 {
@@ -33,10 +34,11 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     switch (myMode) {
     case InsertEllipse:
 
-        ellipse = new MyEllypse(QRectF(pt.x()-10, pt.y()-10, 20, 20));
+        ellipse = new MyEllypse(QRectF(pt.x(), pt.y(), 1, 1));
 
         item  = new ShapeItem(ShapeItem::Ellipse, myMenuItem, ellipse);
         addItem(item->getShape());
+        ellipse->setRect(QRectF(pt.x(), pt.y(), 20, 20));
 
         break;
 
@@ -75,20 +77,18 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void DrawScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-
+ QPointF mousePos = mouseEvent->scenePos();
 
     if (myMode == InsertLine && line != 0) {
-        qDebug( )  << " DrawScene::mouseMoveEvent insetLine ";
-        QLineF newLine(line->line().p1(), mouseEvent->scenePos());
+        QLineF newLine(line->line().p1(), mousePos);
         line->setLine(newLine);
     }
     else if (myMode == InsertEllipse && ellipse !=0){
- qDebug( )  << " DrawScene::mouseMoveEvent insertEllipse ";
-        QPointF pos = mouseEvent->scenePos();
-        double dist = sqrt(pow(ellipse->getCenter().x()-pos.x(), 2) + pow(ellipse->getCenter().y()-pos.y(), 2));
-        ellipse->setRect(ellipse->getCenter().x()- pos.x()-dist, ellipse->getCenter().y()- pos.y()-dist, dist*2, dist*2);
-          //  qDebug() << "   ellipse->getCenter()        "  << ellipse->getCenter();
-    }
+
+        double dx = abs(mousePos.x()- ellipse->getCenterF().x());
+        double dy = abs(mousePos.y() - ellipse->getCenterF().y());
+        ellipse->setRect(ellipse->getCenterF().x()- dx, ellipse->getCenterF().y()- dy, dx * 2, dy * 2);
+            }
     else if (myMode == MoveItem) {
         QGraphicsScene::mouseMoveEvent(mouseEvent);
     }

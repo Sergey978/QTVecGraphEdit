@@ -11,7 +11,7 @@ public:
 
     MyEllypse(const QRectF & outline, QGraphicsItem *parent = 0);
 
-    QPointF getCenter() const;
+    QPointF getCenterF() const;
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
     void setColor(const QColor &color);

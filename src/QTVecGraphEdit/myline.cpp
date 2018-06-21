@@ -98,6 +98,7 @@ void MyLine::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void MyLine::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+
     qDebug() << " MyLine::mouseMoveEvent ";
     QLineF tempLine = line();
     if (_isResizing)
@@ -137,7 +138,4 @@ int MyLine::getDistance(QPointF p1, QPointF p2)
 
     return   sqrt(pow(p1.x()- p2.x(), 2) + pow(p1.y()-p2.y(), 2));
 }
-
-
-
 

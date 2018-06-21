@@ -21,6 +21,7 @@ public:
 
     ShapeType getShapeType() const {return shapeType;}
     QGraphicsItem *getShape();
+    void setShape(QGraphicsItem *item);
 
 
 private:

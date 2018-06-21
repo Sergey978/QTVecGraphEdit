@@ -17,3 +17,8 @@ QGraphicsItem *ShapeItem::getShape()
     return shape;
 }
 
+void ShapeItem::setShape(QGraphicsItem *item)
+{
+    shape = item;
+}
+
