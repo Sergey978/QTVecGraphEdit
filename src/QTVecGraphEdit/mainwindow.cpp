@@ -63,6 +63,15 @@ void MainWindow::itemSelected(QGraphicsItem *item)
 void MainWindow::deleteItem()
 {
 
+
+
+        foreach (QGraphicsItem *item, scene->selectedItems()) {
+
+             scene->removeItem(item);
+             delete item;
+         }
+
+
 }
 
 void MainWindow::about()

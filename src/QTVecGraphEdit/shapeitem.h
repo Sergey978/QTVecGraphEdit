@@ -15,6 +15,7 @@ QT_END_NAMESPACE
 class ShapeItem
 {
 public:
+
     enum ShapeType { Line, Ellipse, Polygone};
 
     ShapeItem(ShapeType type, QMenu *contextMenu, QGraphicsItem *parent = 0 );

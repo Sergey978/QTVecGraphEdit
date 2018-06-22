@@ -120,7 +120,7 @@ if(event->button() == Qt::LeftButton) {
             _isResizing = true;
  qDebug() << "_selectedPoint = 3;  ";
         }
-        else if (getDistance(offset,mapToParent(QPointF(center.x() + width / 2,  center.y() -  height / 2))) <=  SELECT_POINT + 3)
+        else if (getDistance(offset,mapToParent(QPointF(center.x(),  center.y() -  height / 2))) <=  SELECT_POINT + 3)
         {
             _selectedPoint = 4;
             _isResizing = true;
@@ -152,16 +152,19 @@ void MyEllypse::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             setRect(center.x() - dx, center.y() - height / 2, dx *2, height);
 
         }
-        else if(_selectedPoint == 2)
+        else if(_selectedPoint == 3 || _selectedPoint == 4 )
         {
+            double dy = abs(pos.y() - center.y());
 
-          //  setRect(tempEllipse.rect());
+            setRect(center.x() - width /2 , center.y() - dy  , width , dy * 2);
+
+
 
         }
     }
     else
     {
-               setPos(mapToParent(event->pos() - offset));
+               setRect(pos.x() - width /2, pos.y() - height /2, width, height);
                 updatePosition();
 
     }
