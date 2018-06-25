@@ -29,14 +29,16 @@ SOURCES += \
     shapeitem.cpp \
     drawscene.cpp \
     myline.cpp \
-    myellypse.cpp
+    myellypse.cpp \
+    mypolygone.cpp
 
 HEADERS += \
         mainwindow.h \
     shapeitem.h \
     drawscene.h \
     myline.h \
-    myellypse.h
+    myellypse.h \
+    mypolygone.h
 
 RESOURCES += \
     resources.qrc

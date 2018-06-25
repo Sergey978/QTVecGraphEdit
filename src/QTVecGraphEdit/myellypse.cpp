@@ -16,7 +16,7 @@ MyEllypse::MyEllypse(const QRectF & outline, QGraphicsItem *parent):QGraphicsEll
     width = outline.width();
     height = outline.height();
     myColor = Qt::black;
-       setPen(QPen(myColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    setPen(QPen(myColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
 }
 
@@ -65,7 +65,7 @@ void MyEllypse::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidg
     myPen.setColor(myColor);
 
     painter->setPen(myPen);
-   // painter->setBrush(myColor);
+    // painter->setBrush(myColor);
 
     painter->drawEllipse(rect());
 
@@ -96,29 +96,27 @@ void MyEllypse::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidg
 void MyEllypse::mousePressEvent( QGraphicsSceneMouseEvent *event)
 {
 
-offset = event->pos();
+    offset = event->pos();
 
-// choise point for selecting
-if(event->button() == Qt::LeftButton) {
+    // choise point for selecting
+    if(event->button() == Qt::LeftButton) {
 
-        qDebug() << "pos (x, y)  , center x, y distance   "  << offset <<  getDistance(offset,mapToParent(QPointF(center.x() - width / 2,  center.y())));
         if (getDistance(offset,mapToParent(QPointF(center.x() - width / 2,  center.y()))) <=   SELECT_POINT + 3)
         {
             _selectedPoint = 1;
             _isResizing = true;
-            qDebug() << "_selectedPoint = 1;  ";
         }
         else if (getDistance(offset,mapToParent(QPointF(center.x() + width / 2,  center.y()))) <=  SELECT_POINT + 3)
         {
             _selectedPoint = 2;
             _isResizing = true;
- qDebug() << "_selectedPoint = 2;  ";
+
         }
         else if (getDistance(offset,mapToParent(QPointF(center.x() ,  center.y() + height / 2))) <=  SELECT_POINT + 3)
         {
             _selectedPoint = 3;
             _isResizing = true;
- qDebug() << "_selectedPoint = 3;  ";
+
         }
         else if (getDistance(offset,mapToParent(QPointF(center.x(),  center.y() -  height / 2))) <=  SELECT_POINT + 3)
         {
@@ -139,7 +137,7 @@ void MyEllypse::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 
     updatePosition();
-   QPointF pos = event->pos() ;
+    QPointF pos = event->pos() ;
     if (_isResizing)
     {
         prepareGeometryChange();
@@ -164,8 +162,8 @@ void MyEllypse::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
     else
     {
-               setRect(pos.x() - width /2, pos.y() - height /2, width, height);
-                updatePosition();
+        setRect(pos.x() - width /2, pos.y() - height /2, width, height);
+        updatePosition();
 
     }
 
@@ -179,5 +177,5 @@ void MyEllypse::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 int MyEllypse::getDistance(QPointF p1, QPointF p2)
 {
-     return   sqrt(pow(p1.x()- p2.x(), 2) + pow(p1.y()-p2.y(), 2));
+    return   sqrt(pow(p1.x()- p2.x(), 2) + pow(p1.y()-p2.y(), 2));
 }
