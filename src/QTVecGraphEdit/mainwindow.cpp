@@ -132,10 +132,15 @@ void MainWindow::createToolbars()
     ellipsePointerButton->setCheckable(true);
     ellipsePointerButton->setIcon(QIcon(":/Images/ellipse.png"));
 
+    QToolButton *polygonePointerButton = new QToolButton;
+    polygonePointerButton->setCheckable(true);
+    polygonePointerButton->setIcon(QIcon(":/Images/polygone.png"));
+
     pointerTypeGroup = new QButtonGroup(this);
     pointerTypeGroup->addButton(pointerButton, int(DrawScene::MoveItem));
     pointerTypeGroup->addButton(linePointerButton, int(DrawScene::InsertLine));
     pointerTypeGroup->addButton(ellipsePointerButton, int(DrawScene::InsertEllipse));
+    pointerTypeGroup->addButton(polygonePointerButton, int(DrawScene::InsertPolygone));
 
     connect(pointerTypeGroup, SIGNAL(buttonClicked(int)),
             this, SLOT(pointerGroupClicked(int)));
@@ -143,6 +148,7 @@ void MainWindow::createToolbars()
     pointerToolbar = addToolBar(tr("Pointer type"));
     pointerToolbar->addWidget(pointerButton);
     pointerToolbar->addWidget(linePointerButton);
-     pointerToolbar->addWidget(ellipsePointerButton);
+    pointerToolbar->addWidget(ellipsePointerButton);
+    pointerToolbar->addWidget(polygonePointerButton);
 
 }

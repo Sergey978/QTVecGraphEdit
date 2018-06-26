@@ -9,12 +9,13 @@ class MyPolygone: public QGraphicsPolygonItem
 public:
     static const int SELECT_POINT = 5;
 
-    MyPolygone(QGraphicsItem *parent);
+    MyPolygone( const QPointF & firstP, QGraphicsItem *parent = 0);
 
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
     void setColor(const QColor &color);
     void updatePosition();
+    void addPoint(QPointF &point);
     qreal extra = 8;
 
     int type() const
@@ -39,7 +40,7 @@ private:
     QPainterPath path;
     QPolygonF tempPolygon;
 
-    QList<QPointF *> points;
+    QVector<QPointF > points;
 
     int getDistance(QPointF p1, QPointF p2) ;
 

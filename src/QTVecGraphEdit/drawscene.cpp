@@ -10,6 +10,7 @@ DrawScene::DrawScene(QMenu *itemMenu, QObject *parent):QGraphicsScene(parent)
     itemType = ShapeItem::Line;
     line = 0;
     ellipse = 0;
+    polygone = 0;
 
 
 }
@@ -52,6 +53,13 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
         break;
 
+    case InsertPolygone:
+        if (polygone == 0){
+            polygone = new MyPolygone(QPointF(pt.x(), pt.y()));
+             item  = new ShapeItem(ShapeItem::Polygone, myMenuItem, polygone);
+             addItem(item->getShape());
+        }
+
     case InsertText:
         /*
                textItem = new DiagramTextItem();
@@ -67,7 +75,8 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                textItem->setPos(mouseEvent->scenePos());
                emit textInserted(textItem);
                */
-        //! [8] //! [9]
+
+
     default:
         ;
     }
@@ -89,6 +98,13 @@ void DrawScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
         double dy = abs(mousePos.y() - ellipse->getCenterF().y());
         ellipse->setRect(ellipse->getCenterF().x()- dx, ellipse->getCenterF().y()- dy, dx * 2, dy * 2);
             }
+
+    else if (myMode == InsertPolygone && polygone != 0){
+
+        polygone->addPoint(mousePos);
+
+        polygone->update();
+    }
     else if (myMode == MoveItem) {
         QGraphicsScene::mouseMoveEvent(mouseEvent);
     }

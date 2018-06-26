@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 #include "myline.h"
 #include "myellypse.h"
+#include "mypolygone.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsSceneMouseEvent;
@@ -43,6 +44,7 @@ private:
     QMenu *myMenuItem;
     MyLine *line;
     MyEllypse *ellipse;
+    MyPolygone *polygone;
 
 
 };
