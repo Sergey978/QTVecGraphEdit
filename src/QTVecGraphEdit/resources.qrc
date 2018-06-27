@@ -5,6 +5,6 @@
         <file>Images/linepointer.png</file>
         <file>Images/pointer.png</file>
         <file>Images/ellipse.png</file>
-        <file>Images/polygone.PNG</file>
+        <file>Images/polygone.png</file>
     </qresource>
 </RCC>

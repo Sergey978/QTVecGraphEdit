@@ -12,30 +12,30 @@
 
 MyPolygone::MyPolygone(const QPointF &firstP, QGraphicsItem *parent):  QGraphicsPolygonItem (parent)
 {
-    qDebug()<< " 0";
+
 points.append( firstP);
 
 myColor = Qt::black;
 setPen(QPen(myColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
-qDebug()<< " 10";
+
 }
 
 QRectF MyPolygone::boundingRect() const
 {
-    int minX = 0, minY = 0;
-    int maxX = 0, maxY = 0;
+    int minX = points[0].x(), minY = points[0].y();
+    int maxX = points[0].x(), maxY =points[0].y();
 
     for (int i = 0; i < points.length() ; i++)
     {
-        qDebug()<< " 1";
-
-        minX = points[i].x() < minX ?  points[i].x(): minX;
+               minX = points[i].x() < minX ?  points[i].x(): minX;
         maxX = points[i].x() > maxX ?  points[i].x(): maxX;
         minY = points[i].y() < minY ? points[i].y(): minY;
         maxY = points[i].y() > maxY ? points[i].y(): maxY;
-        qDebug()<< " 2";
+
     }
+
+
  return QRectF(QPointF(minX, minY), QSize(maxX - minX, maxY - minY))
          .normalized()
          .adjusted(-extra, -extra, extra, extra);
@@ -45,6 +45,7 @@ QRectF MyPolygone::boundingRect() const
 
 QPainterPath MyPolygone::shape() const
 {
+    QPainterPath path = QGraphicsPolygonItem::shape();
         return path;
 }
 
@@ -63,16 +64,56 @@ void MyPolygone::addPoint(QPointF &point)
     points.append(point);
 }
 
+void MyPolygone::setLastPoint(QPointF &point)
+{
+    qDebug() << "MyPolygone::setLastPoint";
+    if (points.length() > 0){
+        points[points.length() - 1] = point;
+    }
+    else
+    {
+        points.append(point);
+    }
+
+    update();
+}
+
 void MyPolygone::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+qDebug() << "draw polygone";
+
+for (int i = 0; i < points.length() ; i++)
+{
+   qDebug()<< "points i " << i <<points[i];
+
+
+
+}
 
     QPen myPen = pen();
     myPen.setColor(myColor);
-
     painter->setPen(myPen);
+    painter->drawPolygon(QPolygonF(points));
 
-     painter->drawPolygon(QPolygonF(points));
 
+    // test bounding rectangle
+
+    int minX = points[0].x(), minY = points[0].y();
+    int maxX = points[0].x(), maxY =points[0].y();
+
+
+    for (int i = 0; i < points.length() ; i++)
+    {
+        minX = points[i].x() < minX ?  points[i].x(): minX;
+        maxX = points[i].x() > maxX ?  points[i].x(): maxX;
+        minY = points[i].y() < minY ? points[i].y(): minY;
+        maxY = points[i].y() > maxY ? points[i].y(): maxY;
+
+    }
+ qDebug()<< "min i " <<minX <<   minY <<  maxX  << maxY;
+    myPen.setColor("orange");
+    painter->setPen(myPen);
+    painter->drawRect(minX,minY,maxX - minX, maxY - minY);
 
 
 }
@@ -84,6 +125,19 @@ void MyPolygone::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void MyPolygone::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+
+    updatePosition();
+    QPointF pos = event->pos() ;
+    if (_isResizing)
+    {
+
+    }
+    else
+    {
+
+        updatePosition();
+
+    }
 
 }
 

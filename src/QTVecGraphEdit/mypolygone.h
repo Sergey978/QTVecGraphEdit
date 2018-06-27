@@ -16,12 +16,13 @@ public:
     void setColor(const QColor &color);
     void updatePosition();
     void addPoint(QPointF &point);
+    void setLastPoint(QPointF &point );
     qreal extra = 8;
 
     int type() const
     {
         // Enable the use of qgraphicsitem_cast with this item.
-        return UserType+2;
+        return UserType+25;
     }
 
 protected:

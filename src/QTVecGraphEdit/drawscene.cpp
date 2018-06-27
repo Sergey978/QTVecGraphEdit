@@ -56,9 +56,16 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     case InsertPolygone:
         if (polygone == 0){
             polygone = new MyPolygone(QPointF(pt.x(), pt.y()));
-             item  = new ShapeItem(ShapeItem::Polygone, myMenuItem, polygone);
-             addItem(item->getShape());
+            item  = new ShapeItem(ShapeItem::Polygone, myMenuItem, polygone);
+            addItem(item->getShape());
+           }
+        else {
+
+            polygone->addPoint(pt);
+
+
         }
+        break;
 
     case InsertText:
         /*
@@ -86,7 +93,7 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void DrawScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
- QPointF mousePos = mouseEvent->scenePos();
+    QPointF mousePos = mouseEvent->scenePos();
 
     if (myMode == InsertLine && line != 0) {
         QLineF newLine(line->line().p1(), mousePos);
@@ -97,11 +104,11 @@ void DrawScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
         double dx = abs(mousePos.x()- ellipse->getCenterF().x());
         double dy = abs(mousePos.y() - ellipse->getCenterF().y());
         ellipse->setRect(ellipse->getCenterF().x()- dx, ellipse->getCenterF().y()- dy, dx * 2, dy * 2);
-            }
+    }
 
     else if (myMode == InsertPolygone && polygone != 0){
 
-        polygone->addPoint(mousePos);
+        polygone->setLastPoint(mousePos);
 
         polygone->update();
     }
