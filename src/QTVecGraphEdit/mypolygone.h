@@ -9,14 +9,12 @@ class MyPolygone: public QGraphicsPolygonItem
 public:
     static const int SELECT_POINT = 5;
 
-    MyPolygone( const QPointF & firstP, QGraphicsItem *parent = 0);
+    MyPolygone( const QPolygonF & pol, QGraphicsItem *parent = 0);
 
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
     void setColor(const QColor &color);
     void updatePosition();
-    void addPoint(QPointF &point);
-    void setLastPoint(QPointF &point );
     qreal extra = 8;
 
     int type() const
@@ -24,6 +22,9 @@ public:
         // Enable the use of qgraphicsitem_cast with this item.
         return UserType+25;
     }
+
+    QPointF getCenter() const;
+    void  bindedScale(float scaleFactorX, float scaleFactorY);
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
@@ -38,10 +39,7 @@ private:
     bool _isResizing;
     int _selectedPoint;
     QPointF offset;
-    QPainterPath path;
-    QPolygonF tempPolygon;
-
-    QVector<QPointF > points;
+    QPainterPath path;    
 
     int getDistance(QPointF p1, QPointF p2) ;
 

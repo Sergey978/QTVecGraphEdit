@@ -42,6 +42,7 @@ private:
     ShapeItem::ShapeType itemType;
     Mode myMode;
     QMenu *myMenuItem;
+    QPointF oldMousePos;
     MyLine *line;
     MyEllypse *ellipse;
     MyPolygone *polygone;

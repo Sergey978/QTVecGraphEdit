@@ -2,6 +2,8 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
 #include"stdlib.h"
+#include <qmath.h>
+#include"QPointF"
 
 DrawScene::DrawScene(QMenu *itemMenu, QObject *parent):QGraphicsScene(parent)
 {
@@ -28,8 +30,13 @@ void DrawScene::setItemType(ShapeItem::ShapeType type)
 void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     QPointF pt = mouseEvent->scenePos();
-    if (mouseEvent->button() != Qt::LeftButton)
+
+
+    if (mouseEvent->button() != Qt::LeftButton){
+
         return;
+    }
+
 
     ShapeItem *item;
     switch (myMode) {
@@ -54,18 +61,22 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         break;
 
     case InsertPolygone:
-        if (polygone == 0){
-            polygone = new MyPolygone(QPointF(pt.x(), pt.y()));
-            item  = new ShapeItem(ShapeItem::Polygone, myMenuItem, polygone);
-            addItem(item->getShape());
-           }
-        else {
+    {
 
-            polygone->addPoint(pt);
+        QVector<QPointF> vectorPoints;
+        vectorPoints.append(QPointF(pt.x(), pt.y() + 5));
+        vectorPoints.append(QPointF(pt.x() - 5, pt.y() - 5));
+        vectorPoints.append(QPointF(pt.x() + 5, pt.y() - 5));
 
+        polygone = new MyPolygone(QPolygonF(vectorPoints) );
+        item  = new ShapeItem(ShapeItem::Polygone, myMenuItem, polygone);
 
-        }
+        addItem(item->getShape());
+
         break;
+
+    }
+
 
     case InsertText:
         /*
@@ -88,6 +99,7 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         ;
     }
     update();
+
     QGraphicsScene::mousePressEvent(mouseEvent);
 }
 
@@ -108,14 +120,17 @@ void DrawScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
     else if (myMode == InsertPolygone && polygone != 0){
 
-        polygone->setLastPoint(mousePos);
+        QPointF center =  polygone->getCenter();
 
+        double dx = 1 + (mousePos.x()- oldMousePos.x()) / 50;
+        double dy = 1 + (mousePos.y() - oldMousePos.y()) / 50;
+        polygone->bindedScale(dx , dy );
         polygone->update();
     }
     else if (myMode == MoveItem) {
         QGraphicsScene::mouseMoveEvent(mouseEvent);
     }
-
+oldMousePos = mousePos;
 }
 
 void DrawScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)

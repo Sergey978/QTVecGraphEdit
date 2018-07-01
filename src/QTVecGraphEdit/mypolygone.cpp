@@ -1,7 +1,5 @@
 #include "MyPolygone.h"
 
-
-
 #include <qmath.h>
 #include <QPen>
 #include <QPainter>
@@ -9,36 +7,26 @@
 #include <QDebug>
 
 
-
-MyPolygone::MyPolygone(const QPointF &firstP, QGraphicsItem *parent):  QGraphicsPolygonItem (parent)
+MyPolygone::MyPolygone(const QPolygonF &pol, QGraphicsItem *parent):  QGraphicsPolygonItem (parent)
 {
 
-points.append( firstP);
+   setPolygon(pol);
 
-myColor = Qt::black;
-setPen(QPen(myColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    myColor = Qt::black;
+    setPen(QPen(myColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
 
 }
 
 QRectF MyPolygone::boundingRect() const
 {
-    int minX = points[0].x(), minY = points[0].y();
-    int maxX = points[0].x(), maxY =points[0].y();
 
-    for (int i = 0; i < points.length() ; i++)
-    {
-               minX = points[i].x() < minX ?  points[i].x(): minX;
-        maxX = points[i].x() > maxX ?  points[i].x(): maxX;
-        minY = points[i].y() < minY ? points[i].y(): minY;
-        maxY = points[i].y() > maxY ? points[i].y(): maxY;
-
-    }
+    QRectF  boundingRect= polygon().boundingRect();
 
 
- return QRectF(QPointF(minX, minY), QSize(maxX - minX, maxY - minY))
-         .normalized()
-         .adjusted(-extra, -extra, extra, extra);
+    return boundingRect
+            .normalized()
+            .adjusted(-extra, -extra, extra, extra);
 
 
 }
@@ -46,7 +34,7 @@ QRectF MyPolygone::boundingRect() const
 QPainterPath MyPolygone::shape() const
 {
     QPainterPath path = QGraphicsPolygonItem::shape();
-        return path;
+    return path;
 }
 
 void MyPolygone::setColor(const QColor &color)
@@ -59,68 +47,71 @@ void MyPolygone::updatePosition()
 
 }
 
-void MyPolygone::addPoint(QPointF &point)
+QPointF MyPolygone::getCenter() const
 {
-    points.append(point);
-}
-
-void MyPolygone::setLastPoint(QPointF &point)
-{
-    qDebug() << "MyPolygone::setLastPoint";
-    if (points.length() > 0){
-        points[points.length() - 1] = point;
-    }
-    else
+    int centerX = 0, centerY = 0, countP =0;
+    foreach(QPointF point, polygon())
     {
-        points.append(point);
+
+        centerX += point.x();
+        centerY += point.y();
+        countP++;
     }
 
-    update();
+    return QPointF(centerX / countP, centerY /countP );
 }
+
+void MyPolygone::bindedScale(float scaleFactorX, float scaleFactorY)
+{
+
+    QPolygonF qpf = polygon();
+    QPointF oldCenter  = getCenter();
+    QTransform trans;
+    trans=trans.scale(scaleFactorX,scaleFactorY);
+    QPolygonF newPolygon(trans.map(qpf));
+   setPolygon( newPolygon);
+    QPointF newCenter  = getCenter();
+
+    trans = trans.fromTranslate(oldCenter.x()- newCenter.x(), oldCenter.y() - newCenter.y());
+    qpf = polygon();
+    newPolygon = trans.map(qpf);
+    setPolygon(newPolygon);
+
+
+
+}
+
+
+
 
 void MyPolygone::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-qDebug() << "draw polygone";
-
-for (int i = 0; i < points.length() ; i++)
-{
-   qDebug()<< "points i " << i <<points[i];
-
-
-
-}
 
     QPen myPen = pen();
     myPen.setColor(myColor);
     painter->setPen(myPen);
-    painter->drawPolygon(QPolygonF(points));
+    painter->drawPolygon(polygon());
 
-
-    // test bounding rectangle
-
-    int minX = points[0].x(), minY = points[0].y();
-    int maxX = points[0].x(), maxY =points[0].y();
-
-
-    for (int i = 0; i < points.length() ; i++)
+    if (isSelected())
     {
-        minX = points[i].x() < minX ?  points[i].x(): minX;
-        maxX = points[i].x() > maxX ?  points[i].x(): maxX;
-        minY = points[i].y() < minY ? points[i].y(): minY;
-        maxY = points[i].y() > maxY ? points[i].y(): maxY;
+        // sets brush for end points
+        painter->setBrush(Qt::SolidPattern);
+        myPen.setColor(Qt::green);
+        painter->setPen(myPen);
+        foreach(QPointF point, polygon())
+            {
+
+                painter->drawEllipse(point, SELECT_POINT, SELECT_POINT);
+            }
 
     }
- qDebug()<< "min i " <<minX <<   minY <<  maxX  << maxY;
-    myPen.setColor("orange");
-    painter->setPen(myPen);
-    painter->drawRect(minX,minY,maxX - minX, maxY - minY);
-
 
 }
 
 void MyPolygone::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-
+    offset = event->pos();
+ setSelected(true);
 }
 
 void MyPolygone::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -138,7 +129,7 @@ void MyPolygone::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         updatePosition();
 
     }
-
+ setPos(mapToParent(pos - offset));
 }
 
 void MyPolygone::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
