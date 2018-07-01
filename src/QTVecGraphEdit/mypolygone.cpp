@@ -111,22 +111,40 @@ void MyPolygone::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 void MyPolygone::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     offset = event->pos();
+
+    // choise point for selecting
+    int i =0;
+    foreach(QPointF point, polygon())
+        {
+
+            if (getDistance(offset,mapToParent(point)) <=   SELECT_POINT + 3 )
+            {
+                _selectedPoint = i;
+                _isResizing = true;
+                return;
+            }
+            i++;
+        }
+
+
  setSelected(true);
 }
 
 void MyPolygone::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 
-    updatePosition();
+
     QPointF pos = event->pos() ;
     if (_isResizing)
     {
 
+        prepareGeometryChange();
+        polygon()[_selectedPoint] = pos;
     }
     else
     {
 
-        updatePosition();
+
 
     }
  setPos(mapToParent(pos - offset));
@@ -139,5 +157,5 @@ void MyPolygone::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 int MyPolygone::getDistance(QPointF p1, QPointF p2)
 {
-
+     return   sqrt(pow(p1.x()- p2.x(), 2) + pow(p1.y()-p2.y(), 2));
 }
