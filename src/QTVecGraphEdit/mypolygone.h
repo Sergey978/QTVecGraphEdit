@@ -41,7 +41,8 @@ private:
     QPointF offset;
     QPainterPath path;    
 
-    int getDistance(QPointF p1, QPointF p2) ;
+    int getDistance(QPointF p1, QPointF p2) const;
+    int getDistanceToLine(QPointF p, QPointF pl1, QPointF pl2) const;
 
 
 };
