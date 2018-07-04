@@ -110,14 +110,15 @@ void MyPolygone::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 
 void MyPolygone::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    offset = event->pos();
     setSelected(true);
+    offset = event->pos();
+
     // choise point for selecting
-    int i =0;
-    foreach(QPointF point, polygon())
+
+    for ( int i = 0 ; i <  polygon().length(); i++)
     {
 
-        if (getDistance(offset,point) <=   SELECT_POINT )
+        if (getDistance(offset,polygon()[i]) <=   SELECT_POINT )
         {
 
             _selectedPoint = i;
@@ -125,24 +126,23 @@ void MyPolygone::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
             return;
         }
-        if (i > 0)
-        {
-            if (getDistanceToLine(offset, point, polygon()[i-1]) <=   SELECT_POINT )
+
+        if (i > 0){
+            if (getDistanceToLine(offset, polygon()[i], polygon()[i - 1]) <=   SELECT_POINT )
             {
 
-                // addPoint() ;
-
+                insertPoint(i, offset);
+                _isResizing = false;
                 return;
+
             }
         }
-
-
-
-        i++;
+    }
+    if (getDistanceToLine(offset, polygon().first(), polygon().last())  <=   SELECT_POINT){
+        insertPoint(polygon().length(), offset);
     }
 
-
-_isResizing = false;
+    _isResizing = false;
 
 }
 
@@ -153,7 +153,6 @@ void MyPolygone::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     QPointF pos = event->pos() ;
     if (_isResizing)
     {
-        qDebug() << "resizing" << pos;
         prepareGeometryChange();
 
         QPolygonF qpf = polygon();
@@ -174,6 +173,13 @@ void MyPolygone::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 }
 
+void MyPolygone::insertPoint(int pos, QPointF &point)
+{
+    QPolygonF qpf = polygon();
+    qpf.insert(pos, point);
+    setPolygon(qpf);
+}
+// pl1 and pl2 - points of line , p -point near the line
 int MyPolygone::getDistanceToLine(QPointF p, QPointF pl1, QPointF pl2) const
 {
     return abs((pl2.y() - pl1.y())*p.x() - (pl2.x() - pl1.x()) * p.y() + pl2.x() * pl1.y() - pl2.y() * pl1.x() )

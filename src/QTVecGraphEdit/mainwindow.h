@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QtSvg/QSvgGenerator>
 #include <QMainWindow>
 #include"shapeitem.h"
 
@@ -28,6 +29,9 @@ private slots:
 
     void itemSelected(QGraphicsItem *item);
     void deleteItem();
+    void saveToFile();
+    void loadFromfile();
+
     void about();
 
 private:
@@ -45,6 +49,8 @@ private:
     QToolBar *editToolBar;
     QToolBar *pointerToolbar;
 
+    QAction *saveAction;
+    QAction *loadAction;
     QAction *exitAction;
     QAction *deleteAction;
     QAction *aboutAction;

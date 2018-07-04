@@ -5,6 +5,7 @@
 
 #include <QtWidgets>
 
+
 MainWindow::MainWindow()
 {
     createActions();
@@ -52,7 +53,7 @@ void MainWindow::itemInserted(ShapeItem *item)
 
 void MainWindow::pointerGroupClicked(int id)
 {
-        scene->setMode(DrawScene::Mode(pointerTypeGroup->checkedId()));
+    scene->setMode(DrawScene::Mode(pointerTypeGroup->checkedId()));
 }
 
 void MainWindow::itemSelected(QGraphicsItem *item)
@@ -65,12 +66,50 @@ void MainWindow::deleteItem()
 
 
 
-        foreach (QGraphicsItem *item, scene->selectedItems()) {
+    foreach (QGraphicsItem *item, scene->selectedItems()) {
 
-             scene->removeItem(item);
-             delete item;
-         }
+        scene->removeItem(item);
+        delete item;
+    }
 
+
+}
+
+void MainWindow::saveToFile()
+{
+
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Save"), "",
+                                                    tr("Draw Scene (*.ds);;All Files (*)"));
+    if (fileName.isEmpty())
+        return;
+    else {
+        QFile file(fileName);
+        if (!file.open(QIODevice::WriteOnly)) {
+            QMessageBox::information(this, tr("Unable to open file"),
+                                     file.errorString());
+            return;
+        }
+
+
+
+        QSvgGenerator generator;      // Create a file generator object
+        generator.setFileName(fileName);    // We set the path to the file where to save vector graphics
+        generator.setSize(QSize(scene->width(), scene->height()));  // Set the dimensions of the working area of the document in millimeters
+        generator.setViewBox(QRect(0, 0, scene->width(), scene->height())); // Set the work area in the coordinates
+        generator.setTitle(trUtf8("SVG Draw Scene"));                          // The title document
+        generator.setDescription(trUtf8("File created by Vec Editor"));
+
+        QPainter painter;
+            painter.begin(&generator);
+            scene->render(&painter);
+            painter.end();
+
+    }
+}
+
+void MainWindow::loadFromfile()
+{
 
 }
 
@@ -85,8 +124,17 @@ void MainWindow::createActions()
 {
     exitAction = new QAction(tr("E&xit"), this);
     exitAction->setShortcuts(QKeySequence::Quit);
-    exitAction->setStatusTip(tr("Quit Scenediagram example"));
+    exitAction->setStatusTip(tr("Quit"));
     connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
+
+    saveAction = new QAction(tr("Save"), this);
+    saveAction->setShortcuts(QKeySequence::Save);
+    saveAction->setStatusTip(tr("Save"));
+    connect(saveAction, SIGNAL(triggered()), this, SLOT(saveToFile()));
+
+    loadAction = new QAction(tr("Load"), this);
+    loadAction->setStatusTip(tr("Load"));
+    connect(loadAction, SIGNAL(triggered()), this, SLOT(loadFromfile()));
 
 
     deleteAction = new QAction(QIcon(":/Images/delete.png"), tr("&Delete"), this);
@@ -103,7 +151,11 @@ void MainWindow::createActions()
 void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
+    fileMenu->addAction(saveAction);
+    fileMenu->addAction(loadAction);
     fileMenu->addAction(exitAction);
+
+
 
     itemMenu = menuBar()->addMenu(tr("&Item"));
     itemMenu->addAction(deleteAction);

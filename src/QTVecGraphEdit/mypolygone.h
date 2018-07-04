@@ -39,7 +39,9 @@ private:
     bool _isResizing;
     int _selectedPoint;
     QPointF offset;
-    QPainterPath path;    
+    QPainterPath path;
+
+    void insertPoint(int pos, QPointF &point);
 
     int getDistance(QPointF p1, QPointF p2) const;
     int getDistanceToLine(QPointF p, QPointF pl1, QPointF pl2) const;
