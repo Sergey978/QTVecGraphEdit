@@ -18,7 +18,8 @@ public:
 
     enum ShapeType { Line, Ellipse, Polygone};
 
-    ShapeItem(ShapeType type, QMenu *contextMenu, QGraphicsItem *parent = 0 );
+    ShapeItem(ShapeType type, QMenu *contextMenu , QGraphicsItem *parent = 0 );
+    ShapeItem(ShapeType type, QGraphicsItem *parent = 0 );
 
     ShapeType getShapeType() const {return shapeType;}
     QGraphicsItem *getShape();

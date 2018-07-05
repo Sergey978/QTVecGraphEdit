@@ -31,7 +31,6 @@ void DrawScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     QPointF pt = mouseEvent->scenePos();
 
-
     if (mouseEvent->button() != Qt::LeftButton){
 
         return;

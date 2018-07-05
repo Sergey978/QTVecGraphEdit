@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui svg
+QT       += core gui svg xml
 
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -31,7 +31,8 @@ SOURCES += \
     drawscene.cpp \
     myline.cpp \
     myellypse.cpp \
-    mypolygone.cpp
+    mypolygone.cpp \
+    svgreader.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,7 +40,8 @@ HEADERS += \
     drawscene.h \
     myline.h \
     myellypse.h \
-    mypolygone.h
+    mypolygone.h \
+    svgreader.h
 
 RESOURCES += \
     resources.qrc

@@ -2,6 +2,7 @@
 
 #include "drawscene.h"
 #include "shapeitem.h"
+#include "svgreader.h"
 
 #include <QtWidgets>
 
@@ -77,13 +78,21 @@ void MainWindow::deleteItem()
 
 void MainWindow::saveToFile()
 {
-
+    QString filter;
+    filter.append("SVG (*.svg)");
+    filter += ";;AllFiles (*.*)";
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Save"), "",
-                                                    tr("Draw Scene (*.ds);;All Files (*)"));
+                                                   filter);
+
+
+
     if (fileName.isEmpty())
         return;
     else {
+        if (!fileName.endsWith(".svg"))
+            fileName += ".svg";
+
         QFile file(fileName);
         if (!file.open(QIODevice::WriteOnly)) {
             QMessageBox::information(this, tr("Unable to open file"),
@@ -110,6 +119,38 @@ void MainWindow::saveToFile()
 
 void MainWindow::loadFromfile()
 {
+    QString fileName = QFileDialog::getOpenFileName(this,
+            tr("Open"), "",
+            tr("SVG files (*.svg);;All Files (*)"));
+
+
+    if (fileName.isEmpty())
+            return;
+        else {
+
+            QFile file(fileName);
+
+            if (!file.open(QIODevice::ReadOnly)) {
+                QMessageBox::information(this, tr("Unable to open file"),
+                    file.errorString());
+                return;
+            }
+
+    }
+
+       scene->clear();
+       // set dimensions graphics scene
+       scene->setSceneRect(SvgReader::getSizes(fileName));
+
+       //set on graphics scene objects
+
+       foreach (ShapeItem *newItem, SvgReader::getElements(fileName)) {
+
+
+           scene->addItem(newItem->getShape());
+
+       }
+
 
 }
 
